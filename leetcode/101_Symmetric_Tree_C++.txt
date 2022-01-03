@@ -1,0 +1,96 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+private:
+    vector<int> left_inorder(TreeNode* root){
+        vector<int> result;
+        stack<TreeNode *> s;
+        TreeNode* node;
+        
+        if(root==NULL)
+        {return result;}
+        
+        s.push(root);
+        
+        while(!s.empty())
+        {
+            node=s.top();
+            s.pop();
+            result.push_back(node->val);
+            if(node->right)
+            {
+                s.push(node->right);
+            }
+            if(node->left)
+            {
+                s.push(node->left);
+            }
+        }
+        
+        return result;
+    }
+vector<int> right_inorder(TreeNode* root){
+        vector<int> result;
+        stack<TreeNode *> s;
+        TreeNode* node;
+        
+        if(root==NULL)
+        {return result;}
+        
+        s.push(root);
+        
+        while(!s.empty())
+        {
+            node=s.top();
+            s.pop();
+            result.push_back(node->val);
+            if(node->left)
+            {
+                s.push(node->left);
+            }
+            if(node->right)
+            {
+                s.push(node->right);
+            }
+        }
+        
+        return result;
+    }
+public:
+    bool isSymmetric(TreeNode* root) {
+        vector<int> left_queue;
+        vector<int> right_queue;
+        
+        if(root == NULL)
+        {
+            return true;
+        }
+        else if(root->left && root->right)
+        {
+            left_queue = left_inorder(root->left);
+            right_queue = right_inorder(root->right);
+            
+            for(int i=0; i<left_queue.size(); i++)
+            {
+                cout << left_queue[i] << " ";
+            }
+            cout <<endl;
+            for(int i=0; i<right_queue.size(); i++)
+            {
+                cout << right_queue[i] << " ";
+            }
+            cout << endl;
+            
+            return (left_queue==right_queue);
+        }
+    }
+};
