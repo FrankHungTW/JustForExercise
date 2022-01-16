@@ -1,0 +1,22 @@
+
+int removeElement(int* nums, int numsSize, int val){
+    int retain_len=0;
+
+    if(nums)
+    {
+        for(int i=0; i<numsSize; i++)
+        {
+            if(nums[i] != val)
+            {
+                //printf("inset number is %d \n", nums[i]);
+                nums[retain_len] = nums[i];
+                retain_len++;
+            }
+        }
+        return retain_len;
+    }
+    else
+    {
+        return 0;
+    }
+}

@@ -1,0 +1,31 @@
+comment: C and C++ almost has the same methods
+
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        
+        if(nums.empty()) 
+        {
+            return 0;
+        }
+        else if(nums.size()==1)
+        {
+            return 1;
+        }
+        else
+        {
+            int result_index=0;
+            for(int i=0, max=nums.size(); i<max; i++)
+            {
+                //cout << "last number "<< nums[result_index] <<", traverse number"<<nums[i]<<endl;
+                if(nums[result_index]!=nums[i])
+                {
+                    nums[++result_index]=nums[i];
+                }
+            }
+
+            return ++result_index;
+        }
+
+    }
+};
