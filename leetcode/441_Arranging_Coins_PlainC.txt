@@ -1,0 +1,53 @@
+//speed 50%, memory24%
+void decreasingCoins(int* nums, int* current_row) 
+{
+    //return remain num
+    if(*nums-*current_row-1 >=0)
+    {
+        *current_row=*current_row+1;
+        *nums=*nums-*current_row;
+        decreasingCoins(nums, current_row);
+    }
+}
+
+int arrangeCoins(int n){
+    if(n==0)
+    {
+        return 0;
+    }
+    else if(n==1)
+    {
+        return 1;
+    }
+    else
+    {
+        int* nums=(int*)malloc(sizeof(int));
+        int* current_row=(int*)malloc(sizeof(int));
+        *nums=n;
+        *current_row=1;
+        decreasingCoins(nums,current_row);
+        //free(nums);
+        return *current_row;
+    }
+}
+
+//============================================================================//
+//speed45%, memory54%
+int arrangeCoins(int n){
+
+    int current_row=1;
+    while(n-current_row>=0)
+    {
+        n=n-current_row;
+        current_row++;
+    }
+    return current_row-1;
+}
+
+
+//============================================================================//
+//speed69%, memory37%
+int arrangeCoins(int n){
+
+    return (int)((-1 + sqrt(1 + 8 * (long)n)) / 2);
+}
