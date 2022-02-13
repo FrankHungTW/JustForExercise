@@ -1,0 +1,33 @@
+//failm timing exceed, O(n2)
+
+
+int maxSubArray(int* nums, int numsSize){
+
+    if(numsSize==1)
+    {
+        return *nums;
+    }
+    else
+    {
+        int max_sum=*nums, temp_sum=0;
+        
+        for(int i=1; i<=numsSize; i++)
+        {
+            //loop i from accumulate 1 to max NumSize
+            for(int j=0; j<(numsSize-i+1); j++)
+            {
+                temp_sum=0;
+                //j is start array index
+                for(int k=j; k<(j+i);k++)
+                {
+                    //k is traverse index
+                    temp_sum+=nums[k];
+                }
+                //printf("accumulate %d numbers, init from %d, sum=%d \n", i, j, temp_sum);
+                if(temp_sum > max_sum)
+                {max_sum=temp_sum;}
+            }
+        }
+        return max_sum;
+    }
+}

@@ -1,0 +1,47 @@
+//speed 100%, memory 89%
+//DYNAMIC program, also can use brute or mathematical factrion solution
+
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        if(((m==1)&&(n==1))
+           || ((m==2)&&(n==1))
+           || ((m==1)&&(n==2)))
+        {
+            return 1;
+        }
+        else
+        {
+            int sum[n][m];
+            int x=0,y=0;
+            for(int i=0; i<n; i++)
+            {
+                for(int j=0; j<m; j++)
+                {sum[i][j]=0;}
+            }
+            sum[0][0]=1;
+
+            while(x<n)
+            {
+                while(y<m)
+                {
+                    if(x>0)
+                    {
+                        sum[x][y]=sum[x-1][y];
+                        //cout << " 1.add " << sum[x-1][y] << "\n";
+                    }
+                    if(y>0)
+                    {
+                        sum[x][y]+=sum[x][y-1];
+                        //cout << " 2.add " << sum[x][y-1] << "\n";
+                    }
+                    //cout << " x-axis is " << x << ", y-axis is "<< y << ", sum is "<< sum[x][y]<<"\n";
+                    y++;
+                }
+                y=0;
+                x++;
+            }
+            return sum[n-1][m-1];
+        }
+    }
+};

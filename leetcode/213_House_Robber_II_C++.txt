@@ -1,0 +1,51 @@
+//speed 100%, memory 39%
+//dynamic program, circular house so diviede into [0,N-1] and [1,N] compare maximum
+
+class Solution {
+public:
+    int sub_rob(vector<int>& nums, int begin, int end) {
+        //begin and end is vector index
+        if((end-begin)==0)
+        {
+            cout << "1. output is " << nums[begin] << "\n";
+            return nums[begin];
+        }
+        else if((end-begin)==1)
+        {
+            cout << "2. output is " << max(nums[begin],nums[begin+1]) << "\n";
+            return max(nums[begin],nums[begin+1]);
+        }
+        else
+        {
+            vector<int> sum;
+            int i=begin+2;
+            sum.assign(nums.size(),0);
+
+            sum[begin]=nums[begin];
+            sum[begin+1]=max(nums[begin],nums[begin+1]);
+
+            while(i<(end+1))
+            {
+                sum[i] = max(sum[i-2]+nums[i],sum[i-1]);
+                i++;
+            }
+            cout << "3. output is " << sum[end] << "\n";
+            return sum[end];
+        }
+    }
+public: 
+    int rob(vector<int>& nums) {
+        if(nums.size()==1)
+        {
+            return nums[0];
+        }
+        else if(nums.size()==2)
+        {
+            return max(nums[0],nums[1]);
+        }
+        else
+        {
+            return max(sub_rob(nums,0,nums.size()-2),sub_rob(nums, 1,nums.size()-1));
+        }
+    }
+};
