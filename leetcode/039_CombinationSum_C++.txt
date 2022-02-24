@@ -1,0 +1,95 @@
+//recursive decrease target, speed 96%, memory 72%
+class Solution {
+private:
+    void dfs(vector<int>& candidates, int target, int sp, vector<int>&cur, vector<vector<int>>&answer)
+    {
+        if(target==0)
+        {
+            //find answer, add into answer vector
+            answer.push_back(cur);
+        }
+        else
+        {
+            //decrease from sp, avoid same candidates use twice
+            for(int i=sp; i<candidates.size();++i)
+            {
+                if(target<candidates[i])
+                {
+                    break;
+                }
+                else
+                {
+                    cur.push_back(candidates[i]);
+                    dfs(candidates, target-candidates[i], i, cur, answer);
+                    cur.pop_back();
+                }
+            }
+        }
+    }
+    
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> answer;
+        vector<int> cur;
+        
+        sort(candidates.begin(), candidates.end());
+        dfs(candidates, target, 0, cur, answer);
+            
+        return answer;
+    }
+};
+
+//want to Recurisive decrease target, store answer in pointer but compile fail...
+class Solution {
+public:
+    vector<vector<int>> result;
+    int match_size=0;
+    int *answer;
+    int answer_len;
+private:
+    void add_answer(void)
+    {
+        int *added = (int*)malloc(sizeof(int)*answer_len);
+        memcpy(added,answer-answer_len,answer_len);
+        sort(added, added+answer_len);
+        for(int i=0; i<match_size; i++)
+        {
+            if(memcmp(added,result[i]))
+            {
+                break;
+            }
+            else
+            {
+                result[i-1] = added;
+                match_size++;
+            }
+        }
+
+    }
+public:
+    void decreaseSum(vector<int>& candidates, int target) {
+        *answer=target;
+        answer++;
+        answer_len++;        
+        for(int j=0; j<size();j++)
+        {
+            if(candidates[j]==target)
+            {
+                add_answer();
+            }
+            else if(candidates[j]<target)
+            {
+                combinationSum(candidates,target-candidates[j]);
+            }
+        }
+        answer--;
+        answer_len--;
+    }
+    
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        answer = (int*)malloc(sizeof(int)*candidates.size());
+        answer_len = 0;
+        decreaseSum(candidates,target);
+        return result;
+    }
+};

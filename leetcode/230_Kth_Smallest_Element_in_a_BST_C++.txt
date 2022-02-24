@@ -1,0 +1,100 @@
+//Brute force traverse all then sort, speed 5% memory 16%
+class Solution {
+public:
+    void traverse_all(TreeNode* root, vector<int> &list){
+        if(root==NULL)
+        {return;}
+        else
+        {
+            list.push_back(root->val);
+            traverse_all(root->left, list);
+            traverse_all(root->right, list);
+        }
+    }
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        //brute force traverse all then sort
+        vector<int> list;
+        TreeNode* temp;
+        traverse_all(root, list);
+        
+        for (int i = 0; i < list.size(); i++) {
+        std::cout << list[i] << " ";
+        }
+        cout << endl;
+        
+        sort(list.begin(),list.end());
+        
+        for (int i = 0; i < list.size(); i++) {
+        std::cout << list[i] << " ";
+        }
+        cout << endl;
+        return list[k-1];
+    }
+};
+
+
+//Inorder traverse, speed 99% 16%
+class Solution {
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        
+        //inorder traverse all then sort
+        vector<int> list;
+        stack<TreeNode*> kstack;
+        TreeNode* temp;
+        
+        while(root || !kstack.empty())
+        {
+            //kstack.push(root);
+            
+            if(root)
+            {
+                kstack.push(root);
+                root = root->left;
+            }
+            else
+            {
+                root = kstack.top();
+                list.push_back(root->val);
+                root = root->right;
+                kstack.pop();
+            }
+        }
+        
+        for (int i = 0; i < list.size(); i++) {
+        std::cout << list[i] << " ";
+        }
+        cout << endl;
+        return list[k-1];
+    }
+};
+//Inorder traverse, speed 74% 61%
+class Solution {
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        
+        //inorder traverse all then sort
+        //vector<int> list;
+        stack<TreeNode*> kstack;
+
+        while(root || !kstack.empty())
+        {
+            if(root)
+            {
+                kstack.push(root);
+                root = root->left;
+            }
+            else
+            {
+                root = kstack.top();
+                //list.push_back(root->val);
+                if(--k==0){break;}
+                root = root->right;
+                kstack.pop();
+            }
+        }
+        
+        return root->val;
+    }
+};
