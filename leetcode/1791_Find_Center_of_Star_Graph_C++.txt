@@ -1,0 +1,55 @@
+
+class Solution {
+public:
+    int findCenter(vector<vector<int>>& edges) {
+
+        {
+			//O(n) speed 29%, memory 84%
+            vector<int> trv;
+            int center=0;
+
+            while(edges.size())
+            {
+                trv = edges.back();
+                edges.pop_back();
+                if(center!=trv[0])
+                {
+                    center = trv[1];
+                }
+            }
+            return center;
+        }
+		
+		{
+			//O(1) speed 81%, memory 54%
+            if((edges[0][0] ==edges[1][0]) || (edges[0][0] ==edges[1][1]))
+            {
+                return edges[0][0];
+            }
+            else
+            {
+                return edges[0][1];
+            }
+        }
+		{
+			//Graph/Hashtable, speed53%, memory22%
+            unordered_map<int, int> degree;
+            
+            for(const auto & e:edges)
+            {
+                ++degree[e[0]];
+                ++degree[e[1]];
+            }
+            
+            const int n = degree.size();
+            for(const auto &[id,d]:degree)
+            {
+                if(d==n-1)
+                {
+                    return id;
+                }
+            }
+            return -1;
+        }
+    }
+};

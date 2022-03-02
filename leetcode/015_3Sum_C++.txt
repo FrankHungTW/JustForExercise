@@ -1,0 +1,66 @@
+
+//Time Limit Exceeded
+//general soultion but check existed solution too long
+class Solution {
+
+private:
+    void dfs(vector<int>& nums, long int target, int sp, vector<int>&ans, vector<vector<int>>&result)
+    {
+        if((ans.size()==3) && (target==0))
+        {
+            //vector<int> debug = ans;
+            //cout << "debug array = [" << debug[0] <<", " << debug[1]<<", " << debug[2]<<", " << debug[3] << "]"<<endl;
+            vector<vector<int> > traverse;
+            traverse.assign(result.begin(),result.end());
+
+            while(traverse.size())
+            {
+                //debug = traverse.back();
+                //cout << "debug array = [" << debug[0] <<", " << debug[1]<<", " << debug[2]<<", " << debug[3] << "]"<<endl;
+                    
+                if(ans == traverse.back())
+                {
+                    break;
+                }
+                traverse.pop_back();
+            }
+            
+            if(traverse.empty())
+            {
+                //find result and no duplicated, add into result vector
+                result.push_back(ans);
+            }
+        }
+        else if((ans.size()<3))
+        {
+            //decrease from sp, avoid same nums use twice
+            for(int i=sp; i<nums.size();++i)
+            {
+                if((target<0 && nums[i]>0))
+                {
+                    //target from negative to positive, so negative minus positive won't comes to sero
+                    break;
+                }
+                else
+                {
+                    //cout << "before sp = " << sp <<", i=" << i<<", target=" << target<<", num[i]=" << nums[i]<<endl;
+                    ans.push_back(nums[i]);
+                    dfs(nums, target-nums[i], i+1, ans, result);
+                    ans.pop_back();
+                    //cout << "after sp = " << sp <<", i=" << i<<", target=" << target<<endl;
+                }
+            }
+        }
+    }
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> result;
+        vector<int> ans;
+        //int zero_nums = count(nums.begin(),nums.end(),0);
+        
+        sort(nums.begin(),nums.end());
+        dfs(nums,0,0,ans,result);
+        
+        return result;
+    }
+};
