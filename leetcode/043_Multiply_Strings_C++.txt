@@ -1,0 +1,107 @@
+
+//speed 95%, memory 81%
+class Solution {
+public:
+    string multiply(string num1, string num2) {
+		string res(num1.size() + num2.size(), '0');
+		for (int i = num1.size() - 1; i >= 0; --i) {
+			int carry = 0;
+			for (int j = num2.size() - 1; j >= 0; --j) {
+				int tmp = (res[i + j + 1] - '0') + (num2[j] - '0')*(num1[i] - '0') + carry;
+				res[i + j + 1] = tmp % 10 + '0';
+				carry = tmp / 10;
+			}
+			res[i] += carry;
+		}
+		auto pos = res.find_first_not_of('0');
+		if (pos == string::npos)
+			return "0";
+		return res.substr(pos, res.length() - pos);
+    }
+};
+
+
+//compile fail, array declare fail
+class Solution {
+public:
+    string multiply(string num1, string num2) {
+        string sb;//max size is m+n, i.e. 99*99=9801
+        int m = num1.length();
+        int n = num2.length();
+        vector<int> pos;
+        //int[] pos = new int[m + n];
+        int mul, p1, p2, sum;
+        for(int i = m - 1; i >= 0; i--) 
+        {
+            for(int j = n - 1; j >= 0; j--) 
+            {
+                mul = (num1[i] - '0') * (num2[j] - '0'); 
+                p1 = i + j;
+                p2 = i + j + 1;
+                sum = mul + pos[p2];
+
+                pos[p1] += sum/10;
+                pos[p2] = (sum)%10;
+            }
+        }  
+
+        for(int i=0; i< (m+n); i++)
+        {
+            if(!(sb.length() == 0 && pos[i] == 0))
+            {
+                sb.push_back(pos[i]+'0');
+            }
+        }
+        if(sb.length()==0)
+        {
+            sb.push_back('0');
+        }
+        return sb;
+    }
+};
+
+
+//normal way, definetely overflow since num1 and num2 max=200 digits, summary max400 digits
+class Solution {
+public:
+    string multiply(string num1, string num2) {
+        int carry=1;
+        int value;
+        int integer1=0,result_val=0;
+        string result_string;
+        string temp_string;
+        
+        while(num1.size())
+        {
+            value = (int)num1.back()-48;
+            integer1 += carry*value;
+            num1.pop_back();
+            carry=carry*10;
+        }
+        cout << "num1 is: "<< integer1 << endl;
+        
+        carry=1;
+        while(num2.size())
+        {
+            value = (int)num2.back()-48;
+            result_val += carry*value*integer1;
+            num2.pop_back();
+            carry=carry*10;
+        }
+        cout << "result value is: "<< result_val << endl;
+        if(result_val)
+        {
+            while(result_val)
+            {
+                temp_string = (result_val%10)+48;
+                result_string.insert(0,temp_string);
+                result_val=result_val/10;
+            }
+        }
+        else
+        {
+            result_string.push_back('0');
+        }
+        return result_string;
+    }
+};
