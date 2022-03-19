@@ -9,3 +9,76 @@ unsigned int myPow(unsigned int x, unsigned int p)
   if (p%2 == 0) return tmp * tmp;
   else return x * tmp * tmp;
 }
+
+//Graph/Hashtable to find center vertex
+class Solution {
+public:
+    int findCenter(vector<vector<int>>& edges) {
+
+			//Graph/Hashtable, speed53%, memory22%
+            unordered_map<int, int> degree;
+            
+            for(const auto & e:edges)
+            {
+                ++degree[e[0]];
+                ++degree[e[1]];
+            }
+            
+            const int n = degree.size();
+            for(const auto &[id,d]:degree)
+            {
+                if(d==n-1)
+                {
+                    return id;
+                }
+            }
+            return -1;
+    }
+};
+
+//floodfill
+private:
+	void floodFill_API(vector<vector<int>>& image, int sr, int sc, int max_row, int max_colum, int originColor, int newColor)
+	{
+		if((sr<0) || (sc<0) || (sr>=max_row) || (sc>=max_colum))
+		{
+			return;
+		}
+		if (originColor == image[sr][sc])
+		{
+			image[sr][sc] = newColor;
+			floodFill_API(image, sr+1, sc, max_row, max_colum, originColor, newColor);
+			floodFill_API(image, sr, sc+1, max_row, max_colum, originColor, newColor);
+			floodFill_API(image, sr-1, sc, max_row, max_colum, originColor, newColor);
+			floodFill_API(image, sr, sc-1, max_row, max_colum, originColor, newColor);
+		}
+	}
+
+//slide window
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        set<char> table;
+        int longestdistinct=0;
+        int winstart=0, winend=0;
+        
+        while(winend<s.size())
+        {
+            if(table.find(s[winend])==table.end())
+            {
+                //new char
+                table.insert(s[winend]);
+                longestdistinct = max(longestdistinct, winend-winstart+1);
+                winend++;
+            }
+            else
+            {
+                //char exist
+                table.erase(s[winstart]);
+                winstart++;
+            }
+        }
+        
+        return longestdistinct;
+    }
+};

@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        set<char> table;
+        int longestdistinct=0;
+        int winstart=0, winend=0;
+        
+        while(winend<s.size())
+        {
+            if(table.find(s[winend])==table.end())
+            {
+                //new char
+                table.insert(s[winend]);
+                longestdistinct = max(longestdistinct, winend-winstart+1);
+                winend++;
+            }
+            else
+            {
+                //char exist
+                table.erase(s[winstart]);
+                winstart++;
+            }
+        }
+        
+        return longestdistinct;
+    }
+};

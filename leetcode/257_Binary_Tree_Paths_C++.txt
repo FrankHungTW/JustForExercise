@@ -1,0 +1,171 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+ 
+//time 85%, memory 93%
+class Solution {
+private:
+    TreeNode* node;
+private:
+    int push_str(string &trvstr, int val)
+    {
+        int strlen=3;//default -*1, >*1, num*1
+        int num;
+        if(val<0)
+        {
+            val = abs(val);
+            trvstr.push_back('-');
+            strlen++;
+        }
+
+        num = (val/100)%10;
+        if(num)
+        {
+            trvstr.push_back(num +'0');
+            num = (val/10)%10;
+            trvstr.push_back(num +'0');
+            strlen = strlen+2;
+        }
+        else
+        {
+            num = (val/10)%10;
+            if(num)
+            {
+                trvstr.push_back(num +'0');
+                strlen++;
+            }
+        }
+
+        trvstr.push_back(val%10 +'0');
+        return strlen;
+    }
+private:
+    void dfs(vector<string> &result, string &trvstr, TreeNode* root)
+    {
+        if((root->left) || (root->right))
+        {
+            if(root->left)
+            {
+                int strlen;
+                node = root->left;
+                trvstr.push_back('-');
+                trvstr.push_back('>');
+                
+                strlen = push_str(trvstr,node->val);
+                
+                cout<<"traverse left, value = "<<node->val<<endl;
+                dfs(result,trvstr,node);
+                cout<<"erase once, trvstr size = "<<trvstr.size()<<endl;
+                trvstr.erase(trvstr.size()-strlen);
+            }
+            if(root->right)
+            {
+                int strlen;
+                node = root->right;
+                trvstr.push_back('-');
+                trvstr.push_back('>');
+                
+                strlen = push_str(trvstr,node->val);
+                
+                cout<<"traverse right, value = "<<node->val<<endl;
+                dfs(result,trvstr,node);
+                cout<<"erase once, trvstr size = "<<trvstr.size()<<endl;
+                trvstr.erase(trvstr.size()-strlen);
+            }
+        }
+        else
+        {
+            //cout<<"erase once, trvstr size = "<<trvstr.size()<<endl;
+            result.push_back(trvstr);
+        }
+    }
+public:
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string> result;
+        if(root)
+        {
+            string trvstr;
+            push_str(trvstr,root->val);
+            dfs(result,trvstr,root);
+        }
+        
+        return result;
+    }
+};
+ 
+ 
+// simple traverse, only left and right two path
+class Solution {
+public:
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string> result;
+        if(root)
+        {
+            string leftstr;
+            string rightstr;
+            TreeNode* temp=root;
+            
+            if(root->left)
+            {
+                leftstr.push_back(root->val+'0');
+                temp = root->left;
+                
+                while(temp)
+                {
+                    leftstr.push_back('-');
+                    leftstr.push_back('>');
+                    leftstr.push_back(temp->val+'0');
+                    cout<<"left string"<<temp->val<<endl;
+                    if(temp->left)
+                    {temp = temp->left;}
+                    else if(temp->right)
+                    {temp = temp->right;}
+                    else
+                    {
+                        result.push_back(leftstr);
+                        break;
+                    }
+                }
+            }
+            if(root->right)
+            {
+                rightstr.push_back(root->val+'0');
+                temp = root->right;
+                
+                while(temp)
+                {
+                    rightstr.push_back('-');
+                    rightstr.push_back('>');
+                    rightstr.push_back(temp->val+'0');
+                    cout<<"right string"<<temp->val<<endl;
+                    if(temp->left)
+                    {temp = temp->left;}
+                    else if(temp->right)
+                    {temp = temp->right;}
+                    else
+                    {
+                        result.push_back(rightstr);
+                        break;
+                    }
+                }
+            }
+            
+            if(leftstr.size()+rightstr.size() == 0)
+            {
+                string rootonly;
+                rootonly.push_back(root->val+'0');
+                result.push_back(rootonly);
+            }
+        }
+        
+        return result;
+    }
+};

@@ -1,0 +1,75 @@
+
+//speed 46%, memory 84%
+class Solution {
+
+private:
+    void floodFill_API(vector<vector<char>>& grid, int sr, int sc, int max_row, int max_colum)
+    {
+        if((sr<0) || (sc<0) || (sr>=max_row) || (sc>=max_colum))
+        {
+            return;
+        }
+        if (grid[sr][sc] == '1')
+        {
+            grid[sr][sc] = '0';
+            floodFill_API(grid, sr+1, sc, max_row, max_colum);
+            floodFill_API(grid, sr, sc+1, max_row, max_colum);
+            floodFill_API(grid, sr-1, sc, max_row, max_colum);
+            floodFill_API(grid, sr, sc-1, max_row, max_colum);
+        }
+    }
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        int island=0;
+        for(int i=0; i<grid.size(); i++)
+        {
+            for(int j=0; j<grid[0].size(); j++)
+            {
+                if(grid[i][j]=='1')
+                {
+                    floodFill_API(grid, i, j, grid.size(), grid[0].size());
+                    island++;
+                }
+            }
+        }
+        return island;
+    }
+};
+
+//unorder map ocmpile fail
+class Solution {
+private:
+    unordered_map<int, bool> map[300][300];
+private:
+    void floodFill_API(vector<vector<char>>& grid, int sr, int sc, int max_row, int max_colum)
+    {
+        if((sr<0) || (sc<0) || (sr>=max_row) || (sc>=max_colum))
+        {
+            return;
+        }
+        if (grid[sr][sc] == '1')
+        {
+            map[sr][sc] = true;
+            floodFill_API(grid, sr+1, sc, max_row, max_colum);
+            floodFill_API(grid, sr, sc+1, max_row, max_colum);
+            floodFill_API(grid, sr-1, sc, max_row, max_colum);
+            floodFill_API(grid, sr, sc-1, max_row, max_colum);
+        }
+    }
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        int island=1;
+        for(int i=0; i<grid.size(); i++)
+        {
+            for(int j=0; j<grid.size(); j++)
+            {
+                if((grid[i][j]=='1') && (map[i][j]==false))
+                {
+                    floodFill_API(grid, i, j, grid.size(), grid[0].size());
+                    island++;
+                }
+            }
+        }
+        return island;
+    }
+};

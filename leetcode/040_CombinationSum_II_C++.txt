@@ -1,0 +1,54 @@
+//speed 62%, memory 38%
+//sorted to distinguish same value then ignore it
+//also use set to avoid same result
+class Solution {
+private:
+    set<vector<int>> result;
+    vector<int> sol;
+    
+private:
+    void backtrack(vector<int>& candidates, int target, int start)
+    {
+        int temp_value;
+        //vector<int>::iterator it=candidates.begin();
+        
+        for(int i=start; i<candidates.size(); i++)
+        {
+            temp_value = candidates[i];
+            //cout<<"track value = "<<temp_value<<",candidates size remain "<<candidates.size()<<endl;
+            
+            if(temp_value>target)
+            {
+                continue;
+            }
+            else
+            {
+                if(temp_value==target)
+                {
+                    sol.push_back(temp_value);
+                    //result.push_back(sol);
+                    result.insert(sol);
+                    sol.pop_back();
+                }
+                else if((i>start) && (candidates[i]==candidates[i-1]))
+                {
+                    continue;
+                }
+                else//if(temp_value<target)
+                {
+                    sol.push_back(temp_value);
+                    //candidates.erase(it+i);
+                    backtrack(candidates,target-temp_value,i+1);
+                    //candidates.insert(it+i,temp_value);
+                    sol.pop_back();
+                }
+            }
+        }
+    }
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(),candidates.end());//sorted is used to distinguish same value the ignore it
+        backtrack(candidates,target,0);
+        return vector<vector<int>>(result.begin(),result.end());
+    }
+};
