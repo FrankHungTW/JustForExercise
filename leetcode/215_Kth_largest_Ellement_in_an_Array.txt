@@ -7,3 +7,109 @@ public:
         return nums[k-1];
     }
 };
+
+
+//apply heap array, speed16%, memory 19%
+class Solution {
+private:
+    void swap(vector<int> &heaparray, int posa, int posb)
+    {
+        if(posa!=posb)
+        {
+            int temp=heaparray[posa];
+            heaparray[posa] = heaparray[posb];
+            heaparray[posb] = temp;
+        }
+    }
+private:
+    //remove root from maxheap(root is max), resort to maxheap
+    void maxheapify(vector<int> &heaparray)
+    {
+        if(heaparray.size())
+        {
+            int maxpos = heaparray.size();
+            int localmax;
+            int currpos=0, leftpos=1, rightpos=2;//max heapify from maximum root swap with minimum last node
+            //cout<<"maxheapify currpos = "<<currpos<<", leftpos = "<<leftpos<<", rightpos = "<<rightpos<<endl;
+            while(1)
+            {
+                //cout<<"maxheapify currpos = "<<currpos<<", leftpos = "<<leftpos<<", rightpos = "<<rightpos<<endl;
+                localmax = currpos;
+                if((rightpos<maxpos) && (heaparray[rightpos]>heaparray[localmax]))
+                {
+                    localmax = rightpos;
+                }
+                
+                if ((leftpos<maxpos) && (heaparray[leftpos]>heaparray[localmax]))
+                {
+                    localmax = leftpos;
+                }
+                
+                if(localmax!=currpos)
+                {
+                    swap(heaparray, currpos, localmax);
+                    currpos = localmax;
+                }
+                else
+                {
+                    //root swap to proper positionm ,max binary heap done
+                    break;
+                }
+                
+                leftpos = (currpos<<1)+1;
+                rightpos = (currpos<<1)+2;
+            }
+        }
+    }
+private:
+    //swim add in maxheap(root is max)
+    void swim(vector<int> &heaparray, int addnode)
+    {
+        int lastnodepos = heaparray.size();
+        int parentnodepos = lastnodepos?((lastnodepos-1)/2):0;
+        heaparray.push_back(addnode);
+
+        if(lastnodepos!=parentnodepos)
+        {
+            while(heaparray[lastnodepos] >= heaparray[parentnodepos])
+            {
+                //cout<<"swim lastnodepos = "<<lastnodepos<<", parentnodepos = "<<parentnodepos<<endl;
+                swap(heaparray, lastnodepos, parentnodepos);
+                lastnodepos = parentnodepos;
+                parentnodepos = (lastnodepos-1)/2;
+                if(lastnodepos==0)
+                {break;}
+            }
+        }
+    }
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        vector<int> heaparray;
+        int result;
+        //create heap dequeue
+        while(nums.size())
+        {
+            //cout<<"nums size = "<<nums.size()<<", heaparray size = "<<heaparray.size()<<endl;
+            swim(heaparray,nums[nums.size()-1]);
+            nums.pop_back();
+        }
+/*
+        cout<<"heap array member is ";
+        for(int i=0; i<heaparray.size();i++)
+        {
+            cout<<heaparray[i]<<", ";
+        }
+        cout<<endl;
+*/
+        while(k--)
+        {
+            //swap first and last node
+            swap(heaparray, 0, heaparray.size()-1);
+            result = heaparray[heaparray.size()-1];
+            //cout<<"heapify nodesize = "<<heaparray.size()<<", extract max node is "<<result<<endl;
+            heaparray.pop_back();
+            maxheapify(heaparray);
+        }
+        return result;
+    }
+};

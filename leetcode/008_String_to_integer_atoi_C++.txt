@@ -1,0 +1,100 @@
+
+//huahua, spped 35%, memory 89%
+class Solution {
+public:
+  int myAtoi(const string& s) {
+    long long ans = 0;
+    int neg = 0;
+    int pos = 0;
+    bool p = false; // has '.'
+    bool a = false; // has letters
+    bool n = false; // has number
+    for (int i = 0; i < s.length(); ++i) {     
+      if (s[i] == ' ')
+      {
+          if (n || neg || pos) break;
+      }
+      else if (s[i] == '-')
+      {
+          if (n) break; else neg++;
+      }
+      else if (s[i] == '+')
+      {
+          if (n) break; else pos++;
+      }
+      else if (s[i] == '.')
+      {
+          p = true;
+      }
+      else if (s[i] >= '0' && s[i] <= '9' && !p && !a) 
+      {
+        ans = ans * 10 + (s[i] - '0');
+        n = true;
+      }
+      else 
+      {
+        a = true;
+      }
+
+      if (ans / 10 > INT_MAX)
+      {
+          break; // ans can be > 64 bit
+      }
+    }
+ 
+    if (neg) ans = -ans;
+ 
+    if (ans > INT_MAX) ans = INT_MAX;
+    if (ans < INT_MIN) ans = INT_MIN;
+ 
+    if (pos + neg > 1) ans = 0;
+ 
+    return ans;
+  }
+};
+
+
+//grab from front, can't pass 987case
+class Solution {
+public:
+    int myAtoi(string s) {
+        int result=0;
+        bool stingstart=false, zerostart=false, isnegative=false;
+        for(int i=0; i<s.size(); i++)
+        {
+            if(stingstart == false)
+            {
+                if(((s[i]>'0') && (s[i]<='9')) || (s[i]=='+') || (s[i]=='-'))
+                {
+                    stingstart = true;
+                    if(s[i]=='-')
+                    {
+                        isnegative = true;
+                        continue;
+                    }
+                }
+            }
+            cout<<"current result is "<<result<<", char is "<<s[i]<<", string start="<<stingstart<<", traverse index="<<i<<endl;
+            if(stingstart)
+            {
+                if((s[i]>='0') && (s[i]<='9'))
+                {
+                    result = (s[i]-'0')+result*10;
+                }
+                else if(s[i]=='.')
+                {
+                    ;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        if(isnegative)
+        {
+            result = (~result)+1;
+        }
+        return result;
+    }
+};

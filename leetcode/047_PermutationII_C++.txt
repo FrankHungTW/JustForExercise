@@ -1,0 +1,94 @@
+
+//DFS with set, speed21%, memory 16%
+class Solution {
+private:
+    set<vector<int>> solset;
+    vector<vector<int>> result;
+    vector<int> sol;
+private:
+    void dfs(deque<int>& dq)
+    {
+        int temp;
+        if(dq.size()==0)
+        {
+            solset.insert(sol);
+            return;
+        }
+        for(int i=0; i<dq.size(); i++)
+        {
+            temp=dq.front();
+            dq.pop_front();
+            sol.push_back(temp);
+            //cout<<"current pop front is "<<temp<<", current result size is "<<result.size()<<endl;
+            dfs(dq);
+            sol.pop_back();
+            dq.push_back(temp);
+        }
+    }
+
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        deque<int> dq;
+        
+        for (const auto& e: nums)
+        {
+          dq.push_back(e);
+        }
+        dfs(dq);
+        for (const auto& e: solset)
+        {
+          result.push_back(e);
+        }
+        return result;
+    }
+};
+
+//DFS except duplicate number, speed 47%, memory 18%
+class Solution {
+private:
+    vector<vector<int>> result;
+    vector<int> sol;
+private:
+    void dfs(deque<int>& dq)
+    {
+        int temp;
+        int mapmax=dq.size();
+        unordered_map<int,bool> map;
+        if(dq.size()==0)
+        {
+            result.push_back(sol);
+            return;
+        }
+
+        for(int i=0; i<dq.size(); i++)
+        {
+            
+            temp=dq.front();
+            //cout<<"current dq size is "<<dq.size()<<", current temp is "<<temp<<endl;
+            dq.pop_front();
+            sol.push_back(temp);
+
+            //cout<<"current pop front is "<<temp<<", current result size is "<<result.size()<<endl;
+            if(map[temp]!=true)
+            {
+                dfs(dq);
+            }
+            map[temp]=true;
+            sol.pop_back();
+            dq.push_back(temp);
+        }
+    }
+
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        deque<int> dq;
+        sort(nums.begin(),nums.end());
+        for (const auto& e: nums)
+        {
+            dq.push_back(e);
+        }
+        dfs(dq);
+
+        return result;
+    }
+};

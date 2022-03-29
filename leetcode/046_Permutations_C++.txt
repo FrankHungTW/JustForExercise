@@ -1,0 +1,39 @@
+
+//DFS, speed 100%, memory 39%
+class Solution {
+private:
+    vector<vector<int>> result;
+    vector<int> sol;
+private:
+    void dfs(deque<int>& dq)
+    {
+        int temp;
+        if(dq.size()==0)
+        {
+            result.push_back(sol);
+            return;
+        }
+        for(int i=0; i<dq.size(); i++)
+        {
+            temp=dq.front();
+            dq.pop_front();
+            sol.push_back(temp);
+            cout<<"current pop front is "<<temp<<", current result size is "<<result.size()<<endl;
+            dfs(dq);
+            sol.pop_back();
+            dq.push_back(temp);
+        }
+    }
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        deque<int> dq;
+        
+        for (const auto& e: nums)
+        {
+          dq.push_back(e);
+        }
+        dfs(dq);
+        
+        return result;
+    }
+};

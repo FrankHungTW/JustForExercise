@@ -36,7 +36,7 @@ public:
     }
 };
 
-//unorder map ocmpile fail
+//unorder map compile fail
 class Solution {
 private:
     unordered_map<int, bool> map[300][300];

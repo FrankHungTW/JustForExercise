@@ -1,0 +1,40 @@
+
+//BFS, speed 80%, memory15%
+class Solution {
+public:
+    vector<double> averageOfLevels(TreeNode* root) {
+
+        vector<double> result;
+        if(root)
+        {
+            vector<TreeNode*> next;
+
+            next.push_back(root);
+            while(next.size())
+            {
+                double sum=0;
+                int count=0;
+                
+                vector<TreeNode*> curr;
+                curr.assign(next.begin(),next.end());
+                next.clear();
+                for(const auto& node:curr)
+                {
+                    sum += (double)node->val;
+                    count++;
+                    if(node->left)
+                    {
+                        next.push_back(node->left);
+                    }
+                    if(node->right)
+                    {
+                        next.push_back(node->right);
+                    }
+                }
+                result.push_back((double)sum/count);
+            }
+        }
+
+        return result;
+    }
+};

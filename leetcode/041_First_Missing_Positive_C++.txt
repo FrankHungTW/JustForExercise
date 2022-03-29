@@ -1,0 +1,57 @@
+//speed 44%, memory 79%
+class Solution {
+private:
+    void swap(vector<int>& nums, int pos1, int pos2)
+    {
+        int temp=nums[pos1];
+        nums[pos1]=nums[pos2];
+        nums[pos2]=temp;
+    }
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        int diff=1, i, firstpos=0;
+        sort(nums.begin(),nums.end());
+        /*
+        //calculate diff number if needed. (this case fix diff=1)
+        for(i=1; i<nums.size();i++)
+        {
+            if(nums[i-1]<0)
+            {
+                firstpos=i;
+                continue;
+            }
+            if(diff==(nums[i]-nums[i-1]))
+            {
+                //get same value, accurate diff
+                break;
+            }
+            diff=nums[i-1]+nums[i];
+        }*/
+        //cout<<"get diff is "<<diff<<", final i="<<i<<endl;
+        
+        for(i=0; i<nums.size();i++)
+        {
+            if(nums[i]<=0)
+            {
+                //bypass negative and zero, record fist positive position
+                firstpos = i+1;
+                continue;
+            }
+            if((i>0) && (nums[i]==nums[i-1]))
+            {
+                //bypass duplicate number, simply tricky add first positive position
+                firstpos++;
+                continue;
+            }
+            if(nums[i]!=(1+i-firstpos))
+            {return (1+i-firstpos);}
+        }
+        //cout<<"get nums is "<<nums[i-1]<<", final i="<<i<<", first positive position="<<firstpos<<endl;
+        if((nums[i-1]+diff)>0)
+        {
+            return nums[i-1]+diff;
+        }
+        else
+        {return 1;}
+    }
+};
