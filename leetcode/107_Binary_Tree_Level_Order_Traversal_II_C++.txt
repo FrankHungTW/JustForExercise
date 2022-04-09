@@ -1,0 +1,41 @@
+
+//BFS, speed 74%, memory 18%
+class Solution {
+public:
+    vector<vector<int>> levelOrderBottom(TreeNode* root) {
+        vector<vector<int>> result;
+        if(root)
+        {
+            vector<TreeNode*> next;
+            deque<vector<int>> resultQ;
+            
+            next.push_back(root);
+            while(next.size())
+            {
+                vector<TreeNode*> curr;
+                vector<int> sol;
+                curr.assign(next.begin(),next.end());
+                next.clear();
+                for(const auto& node:curr)
+                {
+                    sol.push_back(node->val);
+                    if(node->left)
+                    {
+                        next.push_back(node->left);
+                    }
+                    if(node->right)
+                    {
+                        next.push_back(node->right);
+                    }
+                }
+                resultQ.push_front(sol);
+            }
+            while(resultQ.size())
+            {
+                result.push_back(resultQ.front());
+                resultQ.pop_front();
+            }
+        }
+        return result;
+    }
+};

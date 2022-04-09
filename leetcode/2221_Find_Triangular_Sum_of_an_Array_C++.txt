@@ -1,0 +1,22 @@
+
+//BFS??, speed 84%, memory 48%
+class Solution {
+public:
+    int triangularSum(vector<int>& nums) {
+        vector<int> curr, next;
+        curr.assign(nums.begin(),nums.end());
+
+        for(int i=curr.size(); i>1; i--)
+        {
+            next.clear();
+            for(int k=0; k<i-1; k++)
+            {
+                next.push_back((curr[k]+curr[k+1])%10);
+                //cout<<"current row is "<< i<<", combin positiion="<<k<<", combine result="<<next[k]<<endl;
+            }
+            curr.assign(next.begin(),next.end());
+        }
+        
+        return curr[0];
+    }
+};

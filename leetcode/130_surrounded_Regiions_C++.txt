@@ -1,0 +1,106 @@
+
+
+//recursive2, basic pass, overall exceed time
+class Solution {
+private:
+    int issurround(vector<vector<char>>& board, int row, int col, int prev_row, int prev_col)
+    {
+        /*
+        int right_result=true;
+        int left_result=true;
+        int up_result=true;
+        int down_result=true;
+        */
+        cout << "current check row="<<row<<", colum="<<col<<endl;
+        if(row==0)
+        {return false;}//up_result=false;}
+        else if((row>0) && (prev_row!=row-1) && (board[row-1][col]=='O') && (!issurround(board, row-1, col, row, col)))
+        {return false;}//up_result=false;}
+        
+        if(row==(board.size()-1))
+        {return false;}//down_result=false;}
+        else if( (row<board.size()-1) && (prev_row!=row+1) && (board[row+1][col]=='O') && (!issurround(board, row+1, col, row, col)))
+        {return false;}//down_result=false;}
+        
+        if(col==0)
+        {return false;}//left_result=false;}
+        else if( (col>0) && (prev_col!=col-1) && (board[row][col-1]=='O') && (!issurround(board, row, col-1, row, col)))
+        {return false;}//left_result=false;}
+        
+        if(col==(board[0].size()-1))
+        {return false;}//right_result=false;}
+        else if( (col<board[0].size()-1) && (prev_col!=col+1) && (board[row][col+1]=='O') && (!issurround(board, row, col+1, row, col)))
+        {return false;}//right_result=false;}
+        
+        return true;
+        //cout << "current check row="<<row<<", colum="<<col<<", left result is "<<left_result<<", right result is "<<right_result<<", up result is "<<up_result<<", down result is "<<down_result<<endl;
+        //return ((up_result+down_result+left_result+right_result)==4)?true:false;
+    }
+public:
+    void solve(vector<vector<char>>& board) {
+        for(int i=0; i<board.size(); i++)
+        {
+            for(int j=0; j<board[0].size();j++)
+            {
+                cout << "start check row="<<i<<", colum="<<j<<endl;
+                if((board[i][j]=='O') && issurround(board, i, j, i, j))
+                {
+                    cout << "flip to X, row="<<i<<", colum="<<j<<endl;
+                    board[i][j]='X';
+                }
+            }
+        }
+    }
+};
+
+//recursive1, basic pass, can't pass all 'O' case
+class Solution {
+private:
+    int issurround(vector<vector<char>>& board, int row, int col, int prev_row, int prev_col)
+    {
+        int right_result=true;
+        int left_result=true;
+        int up_result=true;
+        int down_result=true;
+        if(row==0)
+        {up_result=false;}
+        else if((row>0) && (prev_row!=row-1) && (board[row-1][col]=='O') && (!issurround(board, row-1, col, row, col)))
+        {up_result=false;}
+        
+        cout<<"row is "<<row<<", board.size() is "<<board.size()<<endl;
+        if(row==(board.size()-1))
+        {down_result=false;}
+        else if( (row<board.size()-1) && (prev_row!=row+1) && (board[row+1][col]=='O') && (!issurround(board, row+1, col, row, col)))
+        {down_result=false;}
+        
+        if(col==0)
+        {left_result=false;}
+        else if( (col>0) && (prev_col!=col-1) && (board[row][col-1]=='O') && (!issurround(board, row, col-1, row, col)))
+        {left_result=false;}
+        
+        //cout<<"col is "<<col<<", board[0].size() is "<<board[0].size()<<endl;
+        if(col==(board[0].size()-1))
+        {right_result=false;}
+        else if( (col<board[0].size()-1) && (prev_col!=col+1) && (board[row][col+1]=='O') && (!issurround(board, row, col+1, row, col)))
+        {right_result=false;}
+        
+        cout << "current check row="<<row<<", colum="<<col<<", left result is "<<left_result<<", right result is "<<right_result<<", up result is "<<up_result<<", down result is "<<down_result<<endl;
+        
+        return ((up_result+down_result+left_result+right_result)==4)?true:false;
+    }
+public:
+    void solve(vector<vector<char>>& board) {
+        for(int i=0; i<board.size(); i++)
+        {
+            for(int j=0; j<board[0].size();j++)
+            {
+                cout << "start check row="<<i<<", colum="<<j<<endl;
+                if((board[i][j]=='O') && issurround(board, i, j, i, j))
+                {
+                    cout << "flip to X, row="<<i<<", colum="<<j<<endl;
+                    board[i][j]='X';
+                }
+            }
+        }
+    }
+};

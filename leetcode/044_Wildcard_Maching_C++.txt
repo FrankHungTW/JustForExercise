@@ -1,0 +1,91 @@
+
+//DP, speed 55%, memory 23%
+class Solution {
+public:
+    vector< vector<int> >dp;
+    bool solve(string &s, string &p, int i, int j) {
+        if (i >= s.size() && j >= p.size()) return true;
+        if (j >= p.size()) return false;
+        if (i >= s.size()) return p[j] == '*' ? solve(s, p, i, j+1) : false;
+        if (dp[i][j] != -1) return dp[i][j];
+        if (p[j] == '?') return dp[i][j] = solve(s, p, i+1, j+1);
+        if (p[j] == '*') return dp[i][j] = (solve(s, p, i+1, j) || solve(s, p, i+1, j+1) || solve(s, p, i, j+1));
+        if (s[i] == p[j]) return dp[i][j] = solve(s, p, i+1, j+1);
+        return dp[i][j] = false;
+    }
+    bool isMatch(string s, string p) {
+        dp = vector< vector<int> >(s.size(), vector<int>(p.size(), -1));
+        return solve(s, p, 0, 0);
+    }
+};
+
+//check fail
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        int size1=s.size();
+        int size2=p.size();
+        int i=0, j=0;
+        char sstar='\0', pstar='\0';
+        
+        while(1)
+        {
+            cout<<"current i="<<i<<" j="<<j<<", s[i]="<<s[i]<<", p[j]="<<p[j]<<", sstar="<<sstar<<", pstar="<<pstar<<endl;
+            if((i>=size1) && (j<size2))
+            {return false;}
+            
+            if((i>=size2) && (j<size1))
+            {return false;}
+            
+            if((i==size1) && (j==size2))
+            {return true;}
+            
+            if(s[i]=='*')
+            {
+                while(s[i]=='*')
+                {i++;}
+                if(i==size1)
+                {return true;}
+                sstar=s[i];
+            }
+            if(p[j]=='*')
+            {
+                while(p[j]=='*')
+                {j++;}
+                if(j==size2)
+                {return true;}
+                pstar=p[j];
+            }
+
+            if((s[i]!=p[j]) && (s[i]!='?') && (p[j]!='?') && (sstar=='\0') && (pstar=='\0'))
+            {
+                return false;
+            }
+            
+            if(sstar!=s[i])
+            {
+                i++;
+            }
+            else
+            {
+                if(p[j]==s[i])
+                {
+                    i++;
+                    sstar='\0';
+                }
+            }
+            if(pstar!=p[j])
+            {
+                j++;
+            }
+            else
+            {
+                if(p[j]==s[i])
+                {
+                    j++;
+                    pstar='\0';
+                }
+            }
+        }
+    }
+};

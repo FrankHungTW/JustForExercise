@@ -1,0 +1,27 @@
+
+//BFS?? speed 100%, memory 80%
+class Solution {
+public:
+    vector<int> getRow(int rowIndex) {
+        
+        vector<int> curr;//previous answer
+        vector<int> ans;
+        ans.push_back(1);
+        curr.push_back(1);
+
+        for(int i=1; i<=rowIndex; i++)
+        {
+            ans.clear();
+            ans.push_back(1);
+            for(int k=1; k<i; k++)
+            {
+                ans.push_back(curr[k-1]+curr[k]);
+                //cout<<"current row is "<< i<<", combin positiion="<<k<<", combine result="<<curr[k-1]+curr[k]<<endl;
+            }
+            ans.push_back(1);
+            curr.assign(ans.begin(),ans.end());
+        }
+        
+        return ans;
+    }
+};
