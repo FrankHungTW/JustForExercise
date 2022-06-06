@@ -1,0 +1,61 @@
+
+
+//Complete full binary tree charateristic, speed 56%, memory 67%
+class Solution {
+public:
+    Node* connect(Node* root) {
+        
+        if((root) && (root->left))
+        {
+            //since full(perfect) complete binary tree
+            root->left->next = root->right;
+            if(root->next)
+            {
+                //cross branch pointer
+                root->right->next = root->next->left;
+            }
+            connect(root->left);
+            connect(root->right);
+        }
+        return root;
+    }
+};
+
+//BFS, speed 44%, memory 12%
+class Solution {
+public:
+    Node* connect(Node* root) {
+        
+        if(root)
+        {
+            vector<Node*> level;//record each level node
+            vector<Node*> tree;//record whole tree node
+            Node* prev;
+            
+            tree.push_back(root);
+            while(tree.size())
+            {
+                level.assign(tree.begin(),tree.end());
+                tree.clear();
+                prev=NULL;
+                for(const auto node:level)
+                {
+                    if(prev)
+                    {prev->next=node;}
+                    
+                    //cout<<"current val="<<node->val<<endl;
+                    if(node->left)
+                    {
+                        tree.push_back(node->left);
+                    }
+                    if(node->right)
+                    {
+                        tree.push_back(node->right);
+                    }
+                    prev=node;
+                }
+            }
+        }
+        return root;
+    }
+};

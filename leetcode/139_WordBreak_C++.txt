@@ -1,0 +1,40 @@
+
+//char compare if any match, can't pass string compare
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_map<char, bool> dict;
+        bool map[s.size()];
+        string compstr;
+        int accumulate=0, matchpos=0, startpos=0;
+        for(int i=0; i<s.size(); i++)
+        {
+            dict[s[i]]=false;
+            map[i]=false;
+        }
+        
+        for(int i=0; i<wordDict.size(); i++)
+        {
+            startpos=0;
+            compstr = wordDict[i];
+            matchpos = s.find(compstr,0);
+            while (matchpos != std::string::npos)
+            {
+                cout<<"map match position ="<<matchpos<<", string size = "<<compstr.size()<<endl;
+                for(int k=0; k<compstr.size(); k++)
+                {
+                    map[matchpos+k]=true;
+                }
+                matchpos = s.find(compstr,matchpos+1);
+            }
+        }
+        
+        for(int i=0; i<s.size(); i++)
+        {
+            //accumulate+=dict[s[i]];
+            accumulate+=map[i];
+        }
+        cout<<"accumulate ="<<accumulate<<endl;
+        return (accumulate==s.size())?true:false;
+    }
+};

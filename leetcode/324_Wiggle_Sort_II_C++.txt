@@ -1,0 +1,261 @@
+
+//speed 99%, memory95%
+class Solution {
+
+public:
+    void wiggleSort(vector<int>& nums) {
+        #define A(i) nums[(1 + 2 * i) % (n | 1)]
+
+        int n = nums.size(), i = 0, j = 0, k = n - 1;
+        auto midptr = nums.begin() + n / 2;
+        nth_element(nums.begin(), midptr, nums.end());
+        int mid = *midptr;
+        while (j <= k) {
+            if (A(j) > mid) swap(A(i++), A(j++));
+            else if (A(j) < mid) swap(A(j), A(k--));
+            else ++j;
+        }
+    }
+};
+
+//Brute Force, only pass basic input
+class Solution {
+private:
+    void swap(vector<int>& nums, int pos1, int pos2)
+    {
+        if((pos1==pos2) || (nums.size()==0))
+        {
+            return;
+        }
+        else
+        {
+            int temp=nums[pos1];
+            nums[pos1]=nums[pos2];
+            nums[pos2]=temp;
+        }
+    }
+public:
+    void wiggleSort(vector<int>& nums) {
+        deque<int> dq;
+        int greaterless=0;//1 for left>right, 0 for left<right
+        int trv=0,k=0;
+        for(int i=0; i<nums.size(); i++)
+        {
+            swap(nums,0,i);
+            greaterless=0;
+            for(int j=1; j<nums.size();j++)
+            {
+                for(int p=0; p<nums.size();p++)
+                {cout<<nums[p];}
+                cout<<endl;
+                
+                if(greaterless)
+                {
+                    sort(nums.begin()+j,nums.end(),less<int>());
+                    sort(nums.begin()+j,nums.begin()+j+((nums.size()-j+1)/2),greater<int>());
+                    //left > right, right get from smallest
+                    trv=j;
+                    while(nums[j-1]<=nums[j])
+                    {
+                        swap(nums,j,trv);
+                        trv++;
+                        if(trv>=nums.size())
+                        {break;}
+                    }
+                    cout<<"1 left>right, swap index j="<<j<<", trv="<<trv<<endl;
+                }
+                else
+                {
+                    sort(nums.begin()+j,nums.end(),greater<int>());
+                    //left < right, right get from largest
+                    trv=j;
+                    while(nums[j-1]>=nums[j])
+                    {
+                        swap(nums,j,trv);
+                        trv++;
+                        if(trv>=nums.size())
+                        {break;}
+                    }
+                    cout<<"0 left<right, swap index j="<<j<<", trv="<<trv<<endl;
+                }
+                greaterless ^= 0x1;
+            }
+
+            greaterless=0;
+            //check result meet condition
+            for(k=1; k<nums.size();k++)
+            {
+                if(greaterless & 0x1)
+                {
+                    //left > right
+                    if(nums[k-1]<=nums[k])
+                    {break;}
+                }
+                else
+                {
+                    //left < right
+                    if(nums[k-1]>=nums[k])
+                    {break;}
+                }
+                greaterless^= 0x1;
+            }
+            cout<<"result checker k="<<k<<", loop num i="<<i<<endl;
+            if(k==nums.size())
+            {break;}
+        }
+    }
+};
+
+////Brute Force 2, only pass basic input
+class Solution {
+private:
+    void swap(vector<int>& nums, int pos1, int pos2)
+    {
+        if((pos1==pos2) || (nums.size()<=pos1) || (nums.size()<=pos2))
+        {
+            return;
+        }
+        else
+        {
+            int temp=nums[pos1];
+            nums[pos1]=nums[pos2];
+            nums[pos2]=temp;
+        }
+    }
+public:
+    void wiggleSort(vector<int>& nums) {
+        deque<int> dq;
+        int greaterless=0;//1 for left>right, 0 for left<right
+        int trv=0,k=0;
+
+        if(nums.size()==2)
+        {
+            if(nums[0]>nums[1])
+            {swap(nums,0,1);}
+        }
+        else
+        {
+            sort(nums.begin(),nums.end(),less<int>());
+            if(nums.size()&0x1)
+            {
+                //odd
+                swap(nums,0,(nums.size())/2);//begin from middlevalue, 0~6 get 3
+            }
+            else
+            {
+                //even
+                swap(nums,0,((nums.size())/2)-1);//begin from middlevalue, 0~5 get 2
+            }
+            for(int j=1; j<nums.size();j++)
+            {/*
+                for(int p=0; p<nums.size();p++)
+                {cout<<nums[p];}
+                cout<<endl;*/
+                
+                if(greaterless)
+                {
+                    sort(nums.begin()+j,nums.end(),less<int>());
+                    sort(nums.begin()+j,nums.begin()+j+((nums.size()-j+1)/2),greater<int>());
+                    //left > right, right get from smallest
+                    trv=j;
+                    while(nums[j-1]<=nums[j])
+                    {
+                        swap(nums,j,trv);
+                        trv++;
+                        if(trv>=nums.size())
+                        {break;}
+                    }
+                    //cout<<"1 left>right, swap index j="<<j<<", trv="<<trv<<endl;
+                }
+                else
+                {
+                    sort(nums.begin()+j,nums.end(),greater<int>());
+                    //left < right, right get from largest
+                    trv=j;
+                    while(nums[j-1]>=nums[j])
+                    {
+                        swap(nums,j,trv);
+                        trv++;
+                        if(trv>=nums.size())
+                        {break;}
+                    }
+                    //cout<<"0 left<right, swap index j="<<j<<", trv="<<trv<<endl;
+                }
+                greaterless ^= 0x1;
+            }
+        }
+    }
+};
+
+//Brute force 3, time exceeded
+class Solution {
+private:
+    void swap(vector<int>& nums, int pos1, int pos2)
+    {
+        if((pos1==pos2) || (nums.size()<=pos1) || (nums.size()<=pos2))
+        {
+            return;
+        }
+        else
+        {
+            int temp=nums[pos1];
+            nums[pos1]=nums[pos2];
+            nums[pos2]=temp;
+        }
+    }
+public:
+    void wiggleSort(vector<int>& nums) {
+        deque<int> dq;
+        int trv=0,k=0;
+
+        if(nums.size()==2)
+        {
+            if(nums[0]>nums[1])
+            {swap(nums,0,1);}
+        }
+        else
+        {
+            sort(nums.begin(),nums.end(),less<int>());
+            if(nums.size()&0x1)
+            {
+                //odd
+                swap(nums,0,(nums.size())/2);//begin from middlevalue, 0~6 get 3
+            }
+            else
+            {
+                //even
+                swap(nums,0,((nums.size())/2)-1);//begin from middlevalue, 0~5 get 2
+            }
+            for(int j=1; j<nums.size();j++)
+            {/*
+                for(int p=0; p<nums.size();p++)
+                {cout<<nums[p];}
+                cout<<endl;*/
+                
+                sort(nums.begin()+j,nums.end());
+                if((j&0x1)==0)
+                {
+                    if(nums.size()&0x1)
+                    {
+                        trv=j+((nums.size()-j)/2);
+                    }
+                    else
+                    {
+                        trv=j+((nums.size()-j)/2)-1;
+                    }
+                    //left > right, right get from smallest
+                    swap(nums,j,trv);
+                    //cout<<"1 left>right, swap index j="<<j<<", trv="<<trv<<endl;
+                }
+                else
+                {
+                    trv=nums.size()-1;
+                    //sort(nums.begin()+j,nums.end(),greater<int>());
+                    //left < right, right get from largest
+                    swap(nums,j,trv);
+                    //cout<<"0 left<right, swap index j="<<j<<", trv="<<trv<<endl;
+                }
+            }
+        }
+    }
+};

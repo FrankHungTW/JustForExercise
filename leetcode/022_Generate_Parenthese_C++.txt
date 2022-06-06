@@ -1,0 +1,43 @@
+//DFS, speed 71%, memory 47%
+class Solution {
+private:
+    void dfs(int left, int right, string& s, vector<string>& result)
+    {
+        if((left==0) && (right==0))
+        {
+            //correct answer
+            result.push_back(s);
+            return;
+        }
+        
+        if(right<left)
+        {return;}
+        
+        if(left>0)
+        {
+            //s.push_back("(");
+            s = s +"(";
+            dfs(left-1,right,s,result);
+            s.pop_back();
+        }
+        if(right > 0)
+        {
+            //s.push_back(")");
+            s = s +")";
+            dfs(left,right-1,s,result);
+            s.pop_back();
+        }
+    }
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> result;
+        string s;
+        
+        if(n)
+        {
+            dfs(n,n,s,result);
+        }
+        
+        return result;
+    }
+};

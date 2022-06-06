@@ -1,0 +1,101 @@
+
+
+//speed 100%, memory 19%
+class MyStack {
+private:
+    queue<int> qe1;
+    queue<int> qe2;
+public:
+    MyStack() {
+
+    }
+    
+    void push(int x) {
+        if(qe1.empty())
+        {qe2.push(x);}
+        else
+        {qe1.push(x);}
+    }
+    
+    int pop() {
+        if((qe1.empty()) && (qe2.empty()))
+        {
+            return 0;
+        }
+        else
+        {
+            if(qe1.empty())
+            {
+                int temp=qe2.front();
+                while(qe2.size()>1)
+                {
+                    qe1.push(qe2.front());
+                    qe2.pop();
+                    temp=qe2.front();
+                }
+                qe2.pop();
+                return temp;
+            }
+            else
+            {
+                int temp=qe1.front();
+                while(qe1.size()>1)
+                {
+                    qe2.push(qe1.front());
+                    qe1.pop();
+                    temp=qe1.front();
+                }
+                qe1.pop();
+                return temp;
+            }
+        }
+    }
+    
+    int top() {
+        if((qe1.empty()) && (qe2.empty()))
+        {
+            return 0;
+        }
+        else
+        {
+            if(qe1.empty())
+            {
+                int temp;
+                while(qe2.size())
+                {
+                    temp = qe2.front();
+                    qe1.push(qe2.front());
+                    qe2.pop();
+                }
+                return temp;
+            }
+            else
+            {
+                int temp;
+                while(qe1.size())
+                {
+                    temp = qe1.front();
+                    qe2.push(qe1.front());
+                    qe1.pop();
+                }
+                return temp;
+            }
+        }
+    }
+    
+    bool empty() {
+        if((qe1.empty()) && (qe2.empty()))
+        {return true;}
+        else
+        {return false;}
+    }
+};
+
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack* obj = new MyStack();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->top();
+ * bool param_4 = obj->empty();
+ */
