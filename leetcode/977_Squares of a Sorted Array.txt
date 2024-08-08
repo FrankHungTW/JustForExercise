@@ -1,0 +1,84 @@
+38ms, 7.71%
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        vector<int> answer;
+        for(int i=0; i<nums.size(); i++)
+        {
+            answer.push_back(nums[i]*nums[i]);
+        }
+        sort(answer.begin(),answer.end());
+        return answer;
+    }
+};
+
+16ms, 88.84%
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        vector<int> answer(nums.size());
+        int ansIdx = nums.size() -1;
+        for(int left=0, right=nums.size()-1; left <= right;)
+        {
+            if(abs(nums[left]) < abs(nums[right])) {
+                answer[ansIdx--] = nums[right]*nums[right]; right--;
+            }
+            else {
+                answer[ansIdx--] = nums[left]*nums[left]; left++;
+            }
+        }
+        return answer;
+    }
+};
+
+
+class Solution {
+
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        vector<int> answer;
+        int boundryMeet = false;
+        int negIdx = 0, negSqu = 0;//<0
+        int posIdx = 0, posSqu = 0;//>=0
+        /*
+        if(nums.size() == 0) {return nums;}
+        if(nums.size() == 1) {
+            answer.push_back(nums[0]*nums[0]);
+            return answer;
+        }
+        
+        for(posIdx=1; posIdx<nums.size(); posIdx++) {
+            if(nums[posIdx-1] <=0 && nums[posIdx]>=0) {break;}
+        }
+        */
+        for(posIdx=0; posIdx<nums.size(); posIdx++) {
+            if(nums[posIdx]>=0) {break;}
+        }
+        negIdx = posIdx-1;
+        cout << "\n 1. negIdx=" << negIdx << ",posIdx=" << posIdx;
+        while(negIdx!=-1 && posIdx!=nums.size()) {
+            negSqu = nums[negIdx]*nums[negIdx];
+            posSqu = nums[posIdx]*nums[posIdx];
+            if( negSqu <= posSqu) {
+                negIdx--;
+                answer.push_back(negSqu);
+            }
+            else {
+                posIdx++;
+                answer.push_back(posSqu);
+            }
+            cout << "\n 2. negIdx=" << negIdx << ",posIdx=" << posIdx;
+        }
+        if(negIdx==-1) {
+            while(posIdx!=nums.size())
+            {cout << "\n 3. negIdx=" << negIdx << ",posIdx=" << posIdx;
+                answer.push_back(nums[posIdx]*nums[posIdx]); posIdx++;}
+        }
+        if(posIdx==nums.size()) {
+            while(negIdx!=-1)
+            {cout << "\n 4. negIdx=" << negIdx << ",posIdx=" << posIdx;
+            answer.push_back(nums[negIdx]*nums[negIdx]); negIdx--;}
+        }
+        return answer;
+    }
+};

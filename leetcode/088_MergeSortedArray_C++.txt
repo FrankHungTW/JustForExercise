@@ -1,0 +1,47 @@
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int mIdx=0, nIdx=0;
+        vector<int> result;
+        while(mIdx<m && nIdx<n)
+        {
+            if(nums1[mIdx] < nums2[nIdx]) {
+                result.push_back(nums1[mIdx]);
+                mIdx++;
+            }
+            else {//nums1[mIdx] >= nums2[nIdx]
+                result.push_back(nums2[nIdx]);
+                nIdx++;
+            }
+        }
+
+        while(mIdx<m)
+        {
+            result.push_back(nums1[mIdx]);
+            mIdx++;
+        }
+        while(nIdx<n)
+        {
+            result.push_back(nums2[nIdx]);
+            nIdx++;
+        }
+
+        nums1.assign(result.begin(), result.end());  
+    }
+};
+
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int mIdx=m-1, nIdx=n-1, tIdx=m+n-1;
+        while(nIdx>=0)
+        {
+            if((mIdx>=0) && nums1[mIdx]>nums2[nIdx]) {
+                nums1[tIdx--] = nums1[mIdx--];
+            }
+            else {
+                nums1[tIdx--] = nums2[nIdx--];
+            }
+        }
+    }
+};
